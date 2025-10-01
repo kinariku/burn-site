@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BURN - 腕立て伏せカウンターアプリ</title>
+  <meta name="description" content="近接センサーで自動カウント。腕立て伏せを記録して、毎日の成長を可視化しよう。">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ヘッダー */
+    header {
+      padding: 20px 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      color: #ff8c00;
+      text-decoration: none;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ff8c00;
+    }
+
+    /* ヒーロー */
+    .hero {
+      padding: 150px 0 100px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 72px;
+      font-weight: 900;
+      color: #ff8c00;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+    }
+
+    .hero .tagline {
+      font-size: 24px;
+      color: #ff8c00;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff8c00, #ff6b00);
+      color: #fff;
+      padding: 18px 50px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(255, 140, 0, 0.4);
+    }
+
+    /* 特徴セクション */
+    .features {
+      padding: 100px 0;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 60px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 140, 0, 0.2);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 140, 0, 0.5);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #ff8c00;
+    }
+
+    .feature-card p {
+      color: #cbd5e1;
+      font-size: 16px;
+    }
+
+    /* 使い方セクション */
+    .how-it-works {
+      padding: 100px 0;
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 60px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      background: #ff8c00;
+      border-radius: 50%;
+      line-height: 60px;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .step h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    /* CTAセクション */
+    .cta-section {
+      padding: 100px 0;
+      text-align: center;
+      background: rgba(255, 140, 0, 0.1);
+    }
+
+    .cta-section h2 {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 30px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+    }
+
+    /* フッター */
+    footer {
+      padding: 60px 0 30px;
+      background: rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .footer-links {
+      margin-bottom: 30px;
+    }
+
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #ff8c00;
+    }
+
+    .copyright {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .hero .tagline {
+        font-size: 18px;
+      }
+
+      .features h2,
+      .how-it-works h2,
+      .cta-section h2 {
+        font-size: 36px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">BURN</a>
+        <nav>
+          <a href="#features">特徴</a>
+          <a href="#how-it-works">使い方</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="container">
+      <h1>BURN</h1>
+      <p class="tagline">UNLEASH THE BEAST</p>
+      <p>近接センサーで自動カウント。<br>腕立て伏せを記録して、毎日の成長を可視化しよう。</p>
+      <a href="#download" class="cta-button">無料ダウンロード</a>
+    </div>
+  </section>
+
+  <!-- 特徴 -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>特徴</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">�</div>
+          <h3>自動カウント</h3>
+          <p>近接センサーで顔を検知。手でカウントする必要なし。集中してトレーニングに取り組めます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>進捗の可視化</h3>
+          <p>週間グラフで成長を確認。日々の努力が一目で分かります。モチベーション維持に最適。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">�</div>
+          <h3>連続記録</h3>
+          <p>ストリーク機能で毎日の継続をサポート。習慣化を促進して、理想の体を手に入れよう。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>詳細な記録</h3>
+          <p>回数、タイム、ペース、消費カロリーを自動記録。あなたの成長を数値で実感できます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>シンプル設計</h3>
+          <p>複雑な設定は不要。スマホを置いてスタートボタンを押すだけ。誰でも簡単に使えます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💪</div>
+          <h3>完全無料</h3>
+          <p>広告なし、課金なし。すべての機能を無料で利用できます。純粋にトレーニングに集中。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使い方 -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <h2>使い方</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>スマホを床に置く</h3>
+          <p>画面を上向きにして、腕立て伏せをする位置に配置します。</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>スタートボタン</h3>
+          <p>準備ができたら、大きなオレンジのボタンをタップ。</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>腕立て開始</h3>
+          <p>顔がスマホに近づくと、自動でカウントされます。</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>完了</h3>
+          <p>終わったら完了ボタンで記録。成長を実感しよう！</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="download" class="cta-section">
+    <div class="container">
+      <h2>今すぐ始めよう</h2>
+      <p>無料ダウンロードして、理想の体を手に入れよう。</p>
+      <a href="#" class="cta-button">App Storeからダウンロード</a>
+      <br><br>
+      <a href="#" class="cta-button">Google Playからダウンロード</a>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="terms.html">利用規約</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="mailto:support@burnapp.example.com">お問い合わせ</a>
+      </div>
+      <p class="copyright">&copy; 2025 BURN. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
