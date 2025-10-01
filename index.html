@@ -111,23 +111,38 @@
       width: auto;
     }
 
-    .coming-soon-badge {
+    .android-coming-soon {
       position: relative;
-      display: inline-flex;
+      display: inline-block;
+    }
+
+    .android-coming-soon img {
+      filter: grayscale(0.3);
+      opacity: 0.7;
+    }
+
+    .coming-soon-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
       align-items: center;
       justify-content: center;
-      height: clamp(48px, 4.8vw, 60px);
-      min-width: 140px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      font-weight: 600;
-      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
       border-radius: 8px;
+      backdrop-filter: blur(2px);
+    }
+
+    .coming-soon-text {
+      color: var(--color-text-primary);
+      font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: not-allowed;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      line-height: 1.2;
     }
 
     .hero-screenshot {
@@ -510,7 +525,12 @@
           <p class="hero-description">スマホを床に置いて、腕立てするだけ。<br>あとは自動でカウントして、記録します。</p>
           <div class="store-buttons">
             <a href="#"><img src="assets/app-store-badge-ja.svg" alt="App Storeでダウンロード"></a>
-            <div class="coming-soon-badge">Coming Soon</div>
+            <div class="android-coming-soon">
+              <img src="assets/google-play-badge-ja.png" alt="Google Playで手に入れよう">
+              <div class="coming-soon-overlay">
+                <div class="coming-soon-text">Coming Soon</div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
@@ -571,7 +591,12 @@
         <p class="cta-description">毎日の積み重ねが、あなたを変える。<br>スマホを置いて、腕立てするだけ。<br>あとは自動でカウントして、成長を記録しよう。</p>
         <div class="store-buttons">
           <a href="#"><img src="assets/app-store-badge-ja.svg" alt="App Storeでダウンロード"></a>
-          <div class="coming-soon-badge">Coming Soon</div>
+          <div class="android-coming-soon">
+            <img src="assets/google-play-badge-ja.png" alt="Google Playで手に入れよう">
+            <div class="coming-soon-overlay">
+              <div class="coming-soon-text">Coming Soon</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
